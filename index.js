@@ -1,34 +1,34 @@
-var createHmac = require('create-hmac')
+var r = require("jsrsasign");
 
 /**
  * @param {[type]} securityKey
  * @param {[type]} thumborServerUrl
  */
 function Thumbor(securityKey, thumborServerUrl) {
-  'use strict'
-  this.THUMBOR_SECURITY_KEY = securityKey
-  this.THUMBOR_URL_SERVER = thumborServerUrl
-  this.imagePath = ''
-  this.width = 0
-  this.height = 0
-  this.smart = false
-  this.fitInFlag = false
-  this.withFlipHorizontally = false
-  this.withFlipVertically = false
-  this.halignValue = null
-  this.valignValue = null
-  this.cropValues = null
-  this.meta = false
-  this.filtersCalls = ''
+  "use strict";
+  this.THUMBOR_SECURITY_KEY = securityKey;
+  this.THUMBOR_URL_SERVER = thumborServerUrl;
+  this.imagePath = "";
+  this.width = 0;
+  this.height = 0;
+  this.smart = false;
+  this.fitInFlag = false;
+  this.withFlipHorizontally = false;
+  this.withFlipVertically = false;
+  this.halignValue = null;
+  this.valignValue = null;
+  this.cropValues = null;
+  this.meta = false;
+  this.filtersCalls = "";
 }
 
 Thumbor.prototype = {
-  TOP: 'top',
-  MIDDLE: 'middle',
-  BOTTOM: 'bottom',
-  RIGHT: 'right',
-  CENTER: 'center',
-  LEFT: 'left',
+  TOP: "top",
+  MIDDLE: "middle",
+  BOTTOM: "bottom",
+  RIGHT: "right",
+  CENTER: "center",
+  LEFT: "left",
 
   /**
    * Set path of image
@@ -36,10 +36,10 @@ Thumbor.prototype = {
    */
   setImagePath: function(imagePath) {
     this.imagePath =
-      imagePath.charAt(0) === '/'
+      imagePath.charAt(0) === "/"
         ? imagePath.substring(1, imagePath.length)
-        : imagePath
-    return this
+        : imagePath;
+    return this;
   },
 
   /**
@@ -47,11 +47,11 @@ Thumbor.prototype = {
    * @return {String}
    */
   getOperationPath: function() {
-    let parts = this.urlParts()
+    let parts = this.urlParts();
     if (0 === parts.length) {
-      return ''
+      return "";
     }
-    return parts.join('/') + '/'
+    return parts.join("/") + "/";
   },
 
   /**
@@ -60,25 +60,25 @@ Thumbor.prototype = {
    */
   urlParts: function() {
     if (!this.imagePath) {
-      throw new Error("The image url can't be null or empty.")
+      throw new Error("The image url can't be null or empty.");
     }
-    let parts = []
+    let parts = [];
     if (this.meta) {
-      parts.push('meta')
+      parts.push("meta");
     }
     if (this.cropValues) {
       parts.push(
         this.cropValues.left +
-          'x' +
+          "x" +
           this.cropValues.top +
-          ':' +
+          ":" +
           this.cropValues.right +
-          'x' +
+          "x" +
           this.cropValues.bottom
-      )
+      );
     }
     if (this.fitInFlag) {
-      parts.push('fit-in')
+      parts.push("fit-in");
     }
     if (
       this.width ||
@@ -86,31 +86,31 @@ Thumbor.prototype = {
       this.withFlipHorizontally ||
       this.withFlipVertically
     ) {
-      let sizeString = ''
+      let sizeString = "";
       if (this.withFlipHorizontally) {
-        sizeString += '-'
+        sizeString += "-";
       }
-      sizeString += this.width
-      sizeString += 'x'
+      sizeString += this.width;
+      sizeString += "x";
       if (this.withFlipVertically) {
-        sizeString += '-'
+        sizeString += "-";
       }
-      sizeString += this.height
-      parts.push(sizeString)
+      sizeString += this.height;
+      parts.push(sizeString);
     }
     if (this.halignValue) {
-      parts.push(this.halignValue)
+      parts.push(this.halignValue);
     }
     if (this.valignValue) {
-      parts.push(this.valignValue)
+      parts.push(this.valignValue);
     }
     if (this.smart) {
-      parts.push('smart')
+      parts.push("smart");
     }
     if (this.filtersCalls.length) {
-      parts.push('filters:' + this.filtersCalls)
+      parts.push("filters:" + this.filtersCalls);
     }
-    return parts
+    return parts;
   },
 
   /**
@@ -126,15 +126,15 @@ Thumbor.prototype = {
    * @param  {String} height
    */
   resize: function(width, height) {
-    this.width = width
-    this.height = height
-    this.fitInFlag = false
-    return this
+    this.width = width;
+    this.height = height;
+    this.fitInFlag = false;
+    return this;
   },
 
   smartCrop: function(smartCrop) {
-    this.smart = smartCrop
-    return this
+    this.smart = smartCrop;
+    return this;
   },
 
   /**
@@ -145,26 +145,26 @@ Thumbor.prototype = {
    * @param  {String} height
    */
   fitIn: function(width, height) {
-    this.width = width
-    this.height = height
-    this.fitInFlag = true
-    return this
+    this.width = width;
+    this.height = height;
+    this.fitInFlag = true;
+    return this;
   },
 
   /**
    * Flip image horizontally
    */
   flipHorizontally: function() {
-    this.withFlipHorizontally = true
-    return this
+    this.withFlipHorizontally = true;
+    return this;
   },
 
   /**
    * Flip image vertically
    */
   flipVertically: function() {
-    this.withFlipVertically = true
-    return this
+    this.withFlipVertically = true;
+    return this;
   },
 
   /**
@@ -177,11 +177,11 @@ Thumbor.prototype = {
       halign === this.RIGHT ||
       halign === this.CENTER
     ) {
-      this.halignValue = halign
+      this.halignValue = halign;
     } else {
-      throw new Error('Horizontal align must be left, right or center.')
+      throw new Error("Horizontal align must be left, right or center.");
     }
-    return this
+    return this;
   },
 
   /**
@@ -194,11 +194,11 @@ Thumbor.prototype = {
       valign === this.BOTTOM ||
       valign === this.MIDDLE
     ) {
-      this.valignValue = valign
+      this.valignValue = valign;
     } else {
-      throw new Error('Vertical align must be top, bottom or middle.')
+      throw new Error("Vertical align must be top, bottom or middle.");
     }
-    return this
+    return this;
   },
 
   /**
@@ -207,8 +207,8 @@ Thumbor.prototype = {
    * @param  {Boolean} metaDataOnly [description]
    */
   metaDataOnly: function(metaDataOnly) {
-    this.meta = metaDataOnly
-    return this
+    this.meta = metaDataOnly;
+    return this;
   },
 
   /**
@@ -216,8 +216,8 @@ Thumbor.prototype = {
    * @param  {String} filterCall
    */
   filter: function(filterCall) {
-    this.filtersCalls = filterCall
-    return this
+    this.filtersCalls = filterCall;
+    return this;
   },
 
   /**
@@ -234,8 +234,8 @@ Thumbor.prototype = {
       top: top,
       right: right,
       bottom: bottom
-    }
-    return this
+    };
+    return this;
   },
 
   /**
@@ -243,20 +243,33 @@ Thumbor.prototype = {
    * @return {String}
    */
   buildUrl: function() {
-    let operation = this.getOperationPath()
+    let operation = this.getOperationPath();
     if (this.THUMBOR_SECURITY_KEY) {
-      var key = createHmac('sha1', this.THUMBOR_SECURITY_KEY)
-        .update(operation + this.imagePath)
-        .digest('base64')
+      var mac = new r.crypto.Mac({
+        alg: "HmacSHA1",
+        pass: this.THUMBOR_SECURITY_KEY
+      });
 
-      key = key.replace(/\+/g, '-').replace(/\//g, '_')
+      mac.updateString(operation + this.imagePath);
+
+      var key = mac
+        .doFinal()
+        .replace(/\r|\n/g, "")
+        .replace(/([\da-fA-F]{2}) ?/g, "0x$1 ")
+        .replace(/ +$/, "")
+        .split(" ");
+
+      key = btoa(String.fromCharCode.apply(null, key))
+        .replace(/\+/g, "-")
+        .replace(/\//g, "_");
+
       return (
-        this.THUMBOR_URL_SERVER + '/' + key + '/' + operation + this.imagePath
-      )
+        this.THUMBOR_URL_SERVER + "/" + key + "/" + operation + this.imagePath
+      );
     } else {
-      return this.THUMBOR_URL_SERVER + '/unsafe/' + operation + this.imagePath
+      return this.THUMBOR_URL_SERVER + "/unsafe/" + operation + this.imagePath;
     }
   }
-}
+};
 
-module.exports = Thumbor
+module.exports = Thumbor;

@@ -1,14 +1,14 @@
 {
-  "name": "thumbor-js-url-builder",
-  "version": "2.2.0",
-  "description": "Thumbor client for JS",
+  "name": "vanilla-thumbor-url-builder",
+  "version": "1.0.0",
+  "description": "Thumbor client for vanilla JS",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/heysafronov/thumbor-url-builder.git"
+    "url": "git+https://github.com/borgespro/vanilla-thumbor-url-builder.git"
   },
   "keywords": [
     "thumbor",
@@ -16,15 +16,15 @@
     "thumbor-img",
     "thumbor-url",
     "thumbor-builder",
-    "thumbor-client"
+    "thumbor-client",
+    "vanilla",
+    "purejs"
   ],
   "author": "Egor Safronov",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/heysafronov/thumbor-url-builder/issues"
+    "url": "https://github.com/borgespro/vanilla-thumbor-url-builder/issues"
   },
-  "homepage": "https://github.com/heysafronov/thumbor-url-builder#readme",
-  "dependencies": {
-    "create-hmac": "^1.1.7"
-  }
+  "homepage": "https://github.com/borgespro/vanilla-thumbor-url-builder#readme",
+  "dependencies": {}
 }
