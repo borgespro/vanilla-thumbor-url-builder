@@ -1,4 +1,5 @@
 var r = require("jsrsasign");
+var Base64 = require("./base64");
 
 /**
  * @param {[type]} securityKey
@@ -259,7 +260,8 @@ Thumbor.prototype = {
         .replace(/ +$/, "")
         .split(" ");
 
-      key = btoa(String.fromCharCode.apply(null, key))
+      key = new Base64()
+        .encode(String.fromCharCode.apply(null, key))
         .replace(/\+/g, "-")
         .replace(/\//g, "_");
 
